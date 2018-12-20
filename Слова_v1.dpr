@@ -13,7 +13,7 @@ uses
   k:Integer;
   n:Integer;
 
-
+  //Считает кол-во слов
   Function number_of_words(var str:string):Integer;
   var
   i,j:Integer;
@@ -43,7 +43,7 @@ uses
     end;
 
 
-
+    // Преобразование строки в массив слов
     Procedure arr_of_words (var str:string; var aos :array of string);
 
     var
@@ -82,12 +82,12 @@ begin  //Основная программа
 
   write('Введите строку '); readln(str);
   writeln;
-  k:=number_of_words(str);
+  k:=number_of_words(str);  //Считает кол-во слов
   write('Количество слов: ',k );
 
   writeln;
   setlength(aow,k);
-  arr_of_words(str,aow);
+  arr_of_words(str,aow);   // Преобразование строки в массив слов
 
  readln;
 end.
