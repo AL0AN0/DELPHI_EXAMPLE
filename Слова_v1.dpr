@@ -5,8 +5,9 @@ program Слова_v1;
 {$R *.res}
 
 uses
-  System.SysUtils;
-
+  System.SysUtils, Classes, SysUtils;
+type
+ArrOfString = array of string;
   var
   str:string;
   aow: array of string;
@@ -69,7 +70,22 @@ uses
     end;
 
 
+    // Открытие файла по пути str
+  Function open_file (str: string):TStringList;
+  var F : File;
+      stemp: string;
+      slist: TStringList;
+   begin
+    Assign (F,str);
 
+    while SeekEof(f)=False do
+     begin
+       ReadLn(F,Stemp);
+       slist.Add(Stemp);
+     end;
+
+    result:= slist;
+   end;
 
 
 
