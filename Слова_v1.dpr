@@ -5,7 +5,7 @@ program Слова_v1;
 {$R *.res}
 
 uses
-  System.SysUtils, Classes, SysUtils;
+  System.SysUtils, Classes;
 type
 ArrOfString = array of string;
   var
@@ -13,6 +13,14 @@ ArrOfString = array of string;
   aow: array of string;
   k:Integer;
   n:Integer;
+  f1,f2:File;
+  TSL1,TSL2: TStringList;
+
+
+
+
+
+
 
   //Считает кол-во слов
   Function number_of_words(var str:string):Integer;
@@ -71,14 +79,14 @@ ArrOfString = array of string;
 
 
     // Открытие файла по пути str
-  Function open_file (str: string):TStringList;
+  Function open_file (str_patch: string):TStringList;
   var F : File;
       stemp: string;
       slist: TStringList;
    begin
-    Assign (F,str);
-
-    while SeekEof(f)=False do
+    AssignFile (F,str_patch);
+    Reset(F);
+    while SeekEof(F)=False do
      begin
        ReadLn(F,Stemp);
        slist.Add(Stemp);
@@ -91,11 +99,99 @@ ArrOfString = array of string;
 
 
 
+  // Обработка списка строк - удаляет из списка строки с заданным словом
+  Function change_stringlist (wrd: string; slist:TStringList):TStringList;
+  var
+  I,J,k:Integer;
+  slistTMP: TStringList;
+  strx: string;
+  arrwrd: array of string;
+  flg:boolean;
+  begin
+     flg:=false;
+     for I := 0 to slist.count do
+         begin
+         strx:=slist[I];
+         k:=number_of_words(strx);  //Считает кол-во слов
+         setlength(arrwrd,k);
+         arr_of_words(strx,arrwrd);   // Преобразование строки в массив слов
 
-   // Function lngst_word (
+        for J := 0 to k do         // Ищет нужную строку
+          if arrwrd[j]=wrd then
+           flg:=true;
+         end;
+         if NOT flg then slistTMP.Add(slist[I]);   // Добавляет нужную строку во временный список строк
+         result:=slistTMP;
+  end;
+
+
+
+
+
+   Procedure create_and_write_textfile (slist:TStringList;str_patch:string);
+     var
+     F2:File;
+     I:Integer;
+     begin
+       AssignFile (F2,str_patch);
+       Rewrite(F2);
+
+        Append(F2);                           //Открывает файл на добавление
+        for I := 0 to slist.count do
+            WriteLn(slist[I]);                //Заполняет буфер строками
+        Flush(F2);                            //Сброс строк избуфера в файл
+        Closefile(f2);
+     end;
+
+
+
+    Procedure write_file_to_console (str_patch:string);
+    var F: File;
+    stemp:string;
+    begin
+    AssignFile (F,str_patch);
+    while SeekEof(F)=False do
+     begin
+       ReadLn(F,stemp);
+       WriteLn(stemp);
+     end;
+
+    end
+
+
+
+
+
+
 
 begin  //Основная программа
 
+ TSL1:= open_file('Slova_1.txt');
+
+ write('Введите строку '); readln(str);
+  writeln;
+  TSL2:= change_stringlist(str);
+
+  create_and_write_textfile(TSL2, 'Slova_2.txt');
+
+  write_file_to_console('Slova_1.txt');
+  writeln;
+  write_file_to_console('Slova_2.txt');
+
+
+
+readln;
+end.
+
+
+
+
+
+
+
+
+
+ {
   write('Введите строку '); readln(str);
   writeln;
   k:=number_of_words(str);  //Считает кол-во слов
@@ -105,5 +201,4 @@ begin  //Основная программа
   setlength(aow,k);
   arr_of_words(str,aow);   // Преобразование строки в массив слов
 
- readln;
-end.
+}
