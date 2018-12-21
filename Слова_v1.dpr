@@ -5,7 +5,7 @@ program Слова_v1;
 {$R *.res}
 
 uses
-  System.SysUtils, Classes;
+  System.SysUtils,Classes;
 type
 ArrOfString = array of string;
   var
@@ -15,11 +15,6 @@ ArrOfString = array of string;
   n:Integer;
   f1,f2:File;
   TSL1,TSL2: TStringList;
-
-
-
-
-
 
 
   //Считает кол-во слов
